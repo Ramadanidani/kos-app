@@ -138,10 +138,17 @@
 
 {{-- NAVBAR --}}
 <nav class="navbar-mk">
-    <a href="{{ url('/') }}" class="navbar-brand-mk">
-        <i class="bi bi-building"></i>
-        Logo <span class="sep">|</span> ManageMyKos
-    </a>
+    <div class="d-flex align-items-center gap-2">
+    <img src="{{ asset('images/logokos.png') }}"
+         alt="ManageMyKos"
+         style="height: 62px; width: auto;">
+
+        <span class="text-secondary fs-4">|</span>
+
+        <span class="fw-bold fs-4">
+            ManageMyKos
+        </span>
+    </div>
 
     <div class="nav-links">
         <a href="{{ url('/') }}"        class="{{ request()->is('/')       ? 'active' : '' }}">Beranda</a>
@@ -154,7 +161,7 @@
         class="btn-contact">
             Kontak Kami
         </a>
-        <a href="{{ route('tenant.login') }}" class="btn-login ms-2">Login</a>
+        <a href="{{ route('select-role') }}" class="btn-login ms-2">Login</a>
     </div>
 </nav>
 
