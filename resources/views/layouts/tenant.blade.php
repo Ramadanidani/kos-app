@@ -236,10 +236,17 @@
 <aside class="sidebar">
 
     {{-- Logo --}}
-    <a href="{{ route('tenant.dashboard') }}" class="sidebar-logo">
-        <i class="bi bi-building"></i>
-        <span>Logo <span class="sep">|</span> ManageMyKos</span>
-    </a>
+    <div class="d-flex align-items-center gap-2">
+    <img src="{{ asset('images/logokos.png') }}"
+         alt="ManageMyKos"
+         style="height: 52px; width: auto;">
+
+        <span class="text-secondary fs-4">|</span>
+
+        <span class="fw-bold fs-5">
+            ManageMyKos
+        </span>
+    </div>
 
     {{-- Info Penghuni --}}
     @auth('tenant')

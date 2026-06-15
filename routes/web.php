@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\WhatsAppController;
 
 // ── PUBLIC ROUTES ──
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/masuk', fn() => view('auth.select-role'))->name('select-role');
 
 Route::prefix('kamar')->name('rooms.')->group(function () {
     Route::get('/',       [RoomController::class, 'index'])->name('index');
