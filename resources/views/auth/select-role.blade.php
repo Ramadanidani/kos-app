@@ -82,10 +82,12 @@
 
     {{-- Logo --}}
     <div style="text-align:center; margin-bottom:2.5rem;">
-        <div style="width:60px; height:60px; background:rgba(255,140,50,0.15);
+        <div style="width:80px; height:80px; background:rgba(96,165,250,0.12);
                     border-radius:16px; display:flex; align-items:center;
                     justify-content:center; margin:0 auto 14px;">
-            <i class="bi bi-building" style="font-size:1.8rem; color:var(--accent);"></i>
+            <img src="{{ asset('images/logokos.png') }}"
+         alt="ManageMyKos"
+         style="height: 92px; width: auto;">
         </div>
         <h3 style="color:var(--text-white); font-weight:700; margin-bottom:6px;">
             Masuk ke ManageMyKos
