@@ -288,6 +288,11 @@
 
         <div class="menu-label">Layanan</div>
 
+        <a href="{{ route('tenant.announcements.index') }}"
+           class="menu-item {{ request()->routeIs('tenant.announcements.*') ? 'active' : '' }}">
+            <i class="bi bi-megaphone"></i> Pengumuman
+        </a>
+
         <a href="{{ route('tenant.complaints.index') }}"
            class="menu-item {{ request()->routeIs('tenant.complaints.*') ? 'active' : '' }}">
             <i class="bi bi-chat-square-text"></i> Keluhan

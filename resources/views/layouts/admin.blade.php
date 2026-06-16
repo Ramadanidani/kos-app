@@ -304,6 +304,11 @@
             <i class="bi bi-whatsapp"></i> WA Reminder
         </a>
 
+        <a href="{{ route('admin.announcements.index') }}"
+           class="menu-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
+            <i class="bi bi-megaphone"></i> Pengumuman
+        </a>
+
     </nav>
 
     <div class="sidebar-footer">
