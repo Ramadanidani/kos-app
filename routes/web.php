@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\PaymentInfoController;
 use App\Http\Controllers\Admin\PaymentReportController as AdminPaymentReportController;
 use App\Http\Controllers\Tenant\PaymentReportController as TenantPaymentReportController;
 use App\Http\Controllers\Admin\WhatsAppController;
+use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+use App\Http\Controllers\Tenant\AnnouncementController as TenantAnnouncementController;
 
 
 // ── PUBLIC ROUTES ──
@@ -71,6 +73,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('whatsapp/reminder-bulk',             [WhatsAppController::class, 'sendBulkReminder'])->name('whatsapp.bulk-reminder');
     Route::post('whatsapp/reminder-tenant/{tenant}',  [WhatsAppController::class, 'sendTenantReminder'])->name('whatsapp.tenant-reminder');
     Route::get('whatsapp', [WhatsAppController::class, 'index'])->name('whatsapp.index');
+
+    // Pengumuman
+    Route::resource('announcements', AdminAnnouncementController::class);
 });
 
 // ── TENANT AUTH ──
@@ -110,6 +115,11 @@ Route::prefix('penghuni')->name('tenant.')->group(function () {
         Route::get('/laporan-bayar/kirim',  [TenantPaymentReportController::class, 'create'])->name('payment-reports.create');
         Route::post('/laporan-bayar',       [TenantPaymentReportController::class, 'store'])->name('payment-reports.store');
         Route::get('/laporan-bayar/{paymentReport}', [TenantPaymentReportController::class, 'show'])->name('payment-reports.show');
+
+        // Pengumuman
+        Route::get('/pengumuman',                        [TenantAnnouncementController::class, 'index'])->name('announcements.index');
+        Route::get('/pengumuman/{announcement}',         [TenantAnnouncementController::class, 'show'])->name('announcements.show');
+        Route::post('/pengumuman/{announcement}/reaksi', [TenantAnnouncementController::class, 'react'])->name('announcements.react');
 
 
     });
