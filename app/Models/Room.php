@@ -36,4 +36,9 @@ class Room extends Model
     {
         return $query->where('status', 'available');
     }
+
+    public function tenants()
+    {
+        return $this->hasMany(Tenant::class);
+    }
 }
