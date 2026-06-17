@@ -72,8 +72,9 @@
             <div class="content-card-header">
                 <div>
                     <h6 style="color:var(--text-white); font-weight:600; margin:0;">
-                        Keluhan Pending
+                        Keluhan Terbaru
                     </h6>
+                    <small style="color:var(--text-muted);">Keluhan yang sedang pending</small>
                     @if($pendingComplaints->count() > 0)
                     <small style="color:var(--text-muted);">
                         {{ $pendingComplaints->count() }} keluhan menunggu
