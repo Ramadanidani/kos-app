@@ -26,13 +26,16 @@ class TenantController extends Controller
     {
         $validated = $request->validate([
             'name'       => 'required|string|max:100',
-            'phone'      => 'required|string|max:20|unique:tenants,phone',
-            'id_card'    => 'nullable|string|max:20',
+            'phone'      => ['required', 'regex:/^[0-9]{9,13}$/', 'unique:tenants,phone'],
+            'id_card'    => ['nullable', 'regex:/^[0-9]{16}$/'],
             'room_id'    => 'required|exists:rooms,id',
             'start_date' => 'required|date',
             'end_date'   => 'nullable|date|after:start_date',
             'password'   => 'required|string|min:6',
             'notes'      => 'nullable|string',
+        ], [
+            'phone.regex'   => 'Nomor HP harus berupa angka, minimal 9 digit dan maksimal 13 digit.',
+            'id_card.regex' => 'Nomor KTP harus tepat 16 digit angka.',
         ]);
 
         $room = Room::findOrFail($validated['room_id']);
@@ -80,14 +83,17 @@ class TenantController extends Controller
     {
         $validated = $request->validate([
             'name'       => 'required|string|max:100',
-            'phone'      => 'required|string|max:20|unique:tenants,phone,' . $tenant->id,
-            'id_card'    => 'nullable|string|max:20',
+            'phone'      => ['required', 'regex:/^[0-9]{9,13}$/', 'unique:tenants,phone,' . $tenant->id],
+            'id_card'    => ['nullable', 'regex:/^[0-9]{16}$/'],
             'room_id'    => 'required|exists:rooms,id',
             'start_date' => 'required|date',
             'end_date'   => 'nullable|date|after:start_date',
             'status'     => 'required|in:active,inactive',
-            'password'   => 'nullable|string|min:6', // opsional saat edit
+            'password'   => 'nullable|string|min:6',
             'notes'      => 'nullable|string',
+        ], [
+            'phone.regex'   => 'Nomor HP harus berupa angka, minimal 9 digit dan maksimal 13 digit.',
+            'id_card.regex' => 'Nomor KTP harus tepat 16 digit angka.',
         ]);
 
         $oldRoomId = $tenant->room_id;
@@ -127,7 +133,6 @@ class TenantController extends Controller
         }
 
         $tenant->update($updateData);
-
         return redirect()->route('admin.tenants.index')
             ->with('success', "Data penghuni {$tenant->name} berhasil diperbarui.");
     }

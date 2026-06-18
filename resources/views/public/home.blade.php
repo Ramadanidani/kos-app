@@ -300,6 +300,19 @@
                 <p style="color:var(--text-muted); font-size:.82rem; margin:0; line-height:1.6;">
                     Dekat pusat kota, kampus, dan transportasi umum.
                 </p>
+                <a href="https://maps.google.com/?q=Jl. Kramat Raya No.98, RT.2/RW.9, Kwitang, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10450"
+                    target="_blank"
+                    style="
+                            display:inline-block;
+                            margin-top:10px;
+                            color:var(--accent);
+                            font-size:.82rem;
+                            text-decoration:none;
+                            font-weight:600;
+                    ">
+                    <i class="bi bi-map me-1"></i>
+                    Lihat Lokasi
+                </a>
             </div>
 
             <div class="col-6 col-md-3">

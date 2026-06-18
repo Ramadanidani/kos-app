@@ -90,12 +90,29 @@
             </div>
         </div>
 
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:1.5rem;">
-            <input type="checkbox" name="remember" id="remember"
-                   style="accent-color:var(--accent); width:16px; height:16px;">
-            <label for="remember" style="color:var(--text-muted); font-size:.85rem; cursor:pointer;">
-                Ingat saya
-            </label>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" name="remember" id="remember"
+                    style="accent-color:var(--accent); width:16px; height:16px;">
+                <label for="remember"
+                    style="color:var(--text-muted); font-size:.85rem; cursor:pointer;">
+                    Ingat saya
+                </label>
+            </div>
+
+            <a href="https://wa.me/6289507107368?text=Halo%20Admin%20ManageMyKos,%20saya%20lupa%20password.%0A%0ATolong%20lengkapi%20data%20diri%20di%20bawah%20ini:%0A%0ANIK%20KTP%20:%20%0ANo%20HP%20:%20%0ANama%20Lengkap%20:%20"
+                target="_blank"
+                style="
+                        color: var(--accent);
+                        font-size: .85rem;
+                        font-weight: 500;
+                        text-decoration: none;
+                        transition: opacity .2s;
+                "
+                onmouseover="this.style.opacity='.8'"
+                onmouseout="this.style.opacity='1'">
+                    <i class="bi bi-key me-1"></i>Lupa Password?
+            </a>
         </div>
 
         <button type="submit"

@@ -52,13 +52,20 @@
                     <label class="label-mk">No. HP <span style="color:#f87171;">*</span></label>
                     <div style="position:relative;">
                         <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%);
-                                     color:var(--text-muted); font-size:.88rem;">+62</span>
+                                    color:var(--text-muted); font-size:.88rem;">+62</span>
                         <input type="text" name="phone" class="form-mk"
-                               value="{{ old('phone') }}" placeholder="8123456789"
-                               style="padding-left:42px;" required>
+                            value="{{ old('phone') }}"
+                            placeholder="8123456789"
+                            style="padding-left:42px;"
+                            minlength="9" maxlength="13"
+                            pattern="[0-9]{9,13}"
+                            inputmode="numeric"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                            title="Nomor HP harus angka, 9-13 digit"
+                            required>
                     </div>
                     <div style="color:var(--text-muted); font-size:.72rem; margin-top:4px;">
-                        Digunakan untuk login penghuni.
+                        Digunakan untuk login penghuni. Min. 9 digit, maks. 13 digit (tanpa +62).
                     </div>
                     @error('phone')
                         <div style="color:#f87171; font-size:.78rem; margin-top:4px;">{{ $message }}</div>
@@ -67,8 +74,16 @@
                 <div class="col-md-6">
                     <label class="label-mk">No. KTP</label>
                     <input type="text" name="id_card" class="form-mk"
-                           value="{{ old('id_card') }}" placeholder="3201xxxxxxxxxxxxxxxx"
-                           maxlength="16">
+                        value="{{ old('id_card') }}"
+                        placeholder="3201xxxxxxxxxxxxxxxx"
+                        minlength="16" maxlength="16"
+                        pattern="[0-9]{16}"
+                        inputmode="numeric"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        title="Nomor KTP harus tepat 16 digit angka">
+                    <div style="color:var(--text-muted); font-size:.72rem; margin-top:4px;">
+                        Wajib 16 digit angka sesuai KTP.
+                    </div>
                     @error('id_card')
                         <div style="color:#f87171; font-size:.78rem; margin-top:4px;">{{ $message }}</div>
                     @enderror
@@ -76,8 +91,11 @@
                 <div class="col-md-6">
                     <label class="label-mk">Password Sementara <span style="color:#f87171;">*</span></label>
                     <input type="text" name="password" class="form-mk"
-                        value="{{ old('password', '123456') }}"
-                        placeholder="Min. 6 karakter" required>
+                    value="{{ old('password', '123456') }}"
+                    placeholder="Min. 6 karakter"
+                    minlength="6"
+                    maxlength="50"
+                    required>
                     <div style="color:var(--text-muted); font-size:.72rem; margin-top:4px;">
                         <i class="bi bi-info-circle me-1"></i>
                         Penghuni wajib ganti password saat login pertama.

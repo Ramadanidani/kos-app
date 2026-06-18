@@ -249,7 +249,7 @@
                 @endif
 
                 {{-- Tombol Hubungi --}}
-                <a href="https://wa.me/628123456789"
+                <a href="https://wa.me/6289507107368"
                    target="_blank"
                    style="display:block; text-align:center; padding:13px;
                           background:var(--accent); color:#fff; text-decoration:none;
