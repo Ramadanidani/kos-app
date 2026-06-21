@@ -65,12 +65,17 @@
                 </h6>
                 @if($paymentReport->status === 'verified')
                 <span style="background:rgba(34,197,94,0.15); color:#4ade80;
-                             font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
+                            font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
                     Terverifikasi ✓
+                </span>
+                @elseif($paymentReport->status === 'rejected')
+                <span style="background:rgba(239,68,68,0.15); color:#f87171;
+                            font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
+                    Ditolak ✕
                 </span>
                 @else
                 <span style="background:rgba(234,179,8,0.15); color:#fbbf24;
-                             font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
+                            font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
                     Menunggu Verifikasi
                 </span>
                 @endif
@@ -116,6 +121,40 @@
                         Diverifikasi {{ $paymentReport->updated_at->diffForHumans() }}
                     </p>
                 </div>
+                @elseif($paymentReport->status === 'rejected')
+                <div style="margin-top:1rem; background:rgba(239,68,68,0.08);
+                            border:1px solid rgba(239,68,68,0.15); border-radius:10px;
+                            padding:.85rem; text-align:center;">
+                    <i class="bi bi-x-circle-fill" style="color:#f87171; font-size:1.5rem;"></i>
+                    <p style="color:#f87171; margin:.4rem 0 2px; font-weight:600; font-size:.9rem;">
+                        Laporan Ditolak
+                    </p>
+                    <p style="color:var(--text-muted); font-size:.78rem; margin:0;">
+                        Ditolak {{ $paymentReport->updated_at->diffForHumans() }}
+                    </p>
+                </div>
+
+                {{-- Alasan penolakan --}}
+                @if($paymentReport->rejection_reason)
+                <div style="margin-top:.75rem; background:rgba(239,68,68,0.06);
+                            border:1px solid rgba(239,68,68,0.15); border-radius:10px;
+                            padding:.85rem 1rem;">
+                    <div style="color:#f87171; font-size:.78rem; font-weight:600; margin-bottom:4px;">
+                        <i class="bi bi-info-circle me-1"></i> Alasan Penolakan
+                    </div>
+                    <p style="color:var(--text-muted); font-size:.85rem; margin:0; line-height:1.7;">
+                        {{ $paymentReport->rejection_reason }}
+                    </p>
+                </div>
+                @endif
+
+                {{-- Tombol kirim ulang --}}
+                <a href="{{ route('tenant.payment-reports.create') }}"
+                style="display:block; text-align:center; margin-top:.75rem;
+                        background:var(--accent); color:#fff; text-decoration:none;
+                        padding:10px; border-radius:10px; font-size:.85rem; font-weight:600;">
+                    <i class="bi bi-arrow-repeat me-1"></i> Kirim Laporan Baru
+                </a>
                 @else
                 <div style="margin-top:1rem; background:rgba(234,179,8,0.08);
                             border:1px solid rgba(234,179,8,0.15); border-radius:10px;

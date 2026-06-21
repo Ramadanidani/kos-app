@@ -67,17 +67,19 @@
 
                 {{-- Kolom Status --}}
                 <td style="padding: 16px !important; display: table-cell !important; vertical-align: middle;">
-                    @if($report->status === 'verified')
-                    <span style="background:rgba(34,197,94,0.15) !important; color:#4ade80 !important;
-                                 font-size:.72rem; padding:4px 12px; border-radius:20px; font-weight:500; display: inline-block !important;">
-                        Terverifikasi
+                    @php
+                        $statusMap = [
+                            'verified' => ['Terverifikasi', '#4ade80', 'rgba(34,197,94,0.15)'],
+                            'rejected' => ['Ditolak',        '#f87171', 'rgba(239,68,68,0.15)'],
+                            'pending'  => ['Menunggu',       '#fbbf24', 'rgba(234,179,8,0.15)'],
+                        ];
+                        [$sLabel, $sColor, $sBg] = $statusMap[$report->status] ?? $statusMap['pending'];
+                    @endphp
+                    <span style="background:{{ $sBg }}; color:{{ $sColor }};
+                                font-size:.72rem; padding:3px 10px;
+                                border-radius:20px; font-weight:500;">
+                        {{ $sLabel }}
                     </span>
-                    @else
-                    <span style="background:rgba(234,179,8,0.15) !important; color:#fbbf24 !important;
-                                 font-size:.72rem; padding:4px 12px; border-radius:20px; font-weight:500; display: inline-block !important;">
-                        Menunggu
-                    </span>
-                    @endif
                 </td>
 
                 {{-- Kolom Aksi --}}

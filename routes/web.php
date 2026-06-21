@@ -76,6 +76,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Pengumuman
     Route::resource('announcements', AdminAnnouncementController::class);
+
+    // Tolak Laporan 
+    Route::post('payment-reports/{paymentReport}/reject', [AdminPaymentReportController::class, 'reject'])->name('payment-reports.reject');
 });
 
 // ── TENANT AUTH ──

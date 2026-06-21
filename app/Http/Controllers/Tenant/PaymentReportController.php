@@ -37,9 +37,11 @@ class PaymentReportController extends Controller
 
         $tenant = Auth::guard('tenant')->user();
 
-        // Cek apakah periode ini sudah pernah dilaporkan
+        // Hanya cek laporan yang masih aktif (pending/verified)
+        // Laporan yang ditolak tidak menghalangi pengiriman ulang
         $exists = PaymentReport::where('tenant_id', $tenant->id)
             ->where('period', $validated['period'])
+            ->whereIn('status', ['pending', 'verified'])
             ->exists();
 
         if ($exists) {

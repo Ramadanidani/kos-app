@@ -111,8 +111,22 @@ class TenantController extends Controller
             $newRoom->update(['status' => 'occupied']);
         }
 
+       // Jika status penghuni berubah dari active → inactive, bebaskan kamar
         if ($validated['status'] === 'inactive' && $tenant->status === 'active') {
             Room::where('id', $newRoomId)->update(['status' => 'available']);
+        }
+
+        // Jika status penghuni berubah dari inactive → active, isi ulang kamar
+        if ($validated['status'] === 'active' && $tenant->status === 'inactive') {
+            $targetRoom = Room::find($newRoomId);
+
+            if ($targetRoom && $targetRoom->status === 'available') {
+                $targetRoom->update(['status' => 'occupied']);
+            } elseif ($targetRoom && $targetRoom->status !== 'available') {
+                // Kamar sudah ditempati penghuni lain — jangan timpa, beri peringatan
+                return back()->withInput()
+                    ->withErrors(['status' => "Kamar {$targetRoom->name} sudah ditempati penghuni lain. Pilih kamar lain atau bebaskan kamar tersebut dulu."]);
+            }
         }
 
         $updateData = [

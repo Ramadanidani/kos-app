@@ -9,7 +9,7 @@ class PaymentReport extends Model
     protected $fillable = [
         'tenant_id', 'room_id', 'period',
         'amount', 'method', 'proof_image',
-        'notes', 'status'
+        'notes', 'status','rejection_reason',
     ];
 
     public function tenant()

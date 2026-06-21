@@ -20,17 +20,17 @@ class PaymentReportController extends Controller
             $query->where('status', $request->status);
         }
 
-        $reports       = $query->paginate(10);
-        $totalPending  = PaymentReport::where('status', 'pending')->count();
-        $totalVerified = PaymentReport::where('status', 'verified')->count();
+        $reports        = $query->paginate(10);
+        $totalPending   = PaymentReport::where('status', 'pending')->count();
+        $totalVerified  = PaymentReport::where('status', 'verified')->count();
+        $totalRejected  = PaymentReport::where('status', 'rejected')->count();
 
-        // Daftar periode yang ada untuk filter
         $periods = PaymentReport::selectRaw('DISTINCT period')
             ->orderBy('period', 'desc')
             ->pluck('period');
 
         return view('admin.payment-reports.index', compact(
-            'reports', 'totalPending', 'totalVerified', 'periods'
+            'reports', 'totalPending', 'totalVerified', 'totalRejected', 'periods'
         ));
     }
 
@@ -46,5 +46,20 @@ class PaymentReportController extends Controller
 
         return back()->with('success',
             "Laporan dari {$paymentReport->tenant->name} berhasil diverifikasi.");
+    }
+
+    public function reject(Request $request, PaymentReport $paymentReport)
+    {
+        $validated = $request->validate([
+            'rejection_reason' => 'required|string|max:500',
+        ]);
+
+        $paymentReport->update([
+            'status'           => 'rejected',
+            'rejection_reason' => $validated['rejection_reason'],
+        ]);
+
+        return back()->with('success',
+            "Laporan dari {$paymentReport->tenant->name} berhasil ditolak.");
     }
 }

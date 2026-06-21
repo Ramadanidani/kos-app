@@ -57,6 +57,22 @@
         </div>
         @endif
 
+        @if($paymentReport->status === 'rejected' && $paymentReport->rejection_reason)
+        <div class="content-card mt-3">
+            <div class="content-card-header">
+                <h6 style="color:var(--text-white); font-weight:600; margin:0;">
+                    <i class="bi bi-x-circle me-2" style="color:#f87171;"></i>
+                    Alasan Penolakan
+                </h6>
+            </div>
+            <div class="content-card-body">
+                <p style="color:#f87171; line-height:1.8; margin:0; font-size:.9rem;">
+                    {{ $paymentReport->rejection_reason }}
+                </p>
+            </div>
+        </div>
+@endif
+
     </div>
 
     {{-- KANAN: Info & Aksi --}}
@@ -71,12 +87,17 @@
                 </h6>
                 @if($paymentReport->status === 'verified')
                 <span style="background:rgba(34,197,94,0.15); color:#4ade80;
-                             font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
+                            font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
                     Terverifikasi
+                </span>
+                @elseif($paymentReport->status === 'rejected')
+                <span style="background:rgba(239,68,68,0.15); color:#f87171;
+                            font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
+                    Ditolak
                 </span>
                 @else
                 <span style="background:rgba(234,179,8,0.15); color:#fbbf24;
-                             font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
+                            font-size:.75rem; padding:4px 12px; border-radius:20px; font-weight:500;">
                     Menunggu
                 </span>
                 @endif
@@ -136,7 +157,7 @@
             </div>
         </div>
 
-        {{-- Tombol Verifikasi --}}
+        {{-- Tombol Aksi Admin --}}
         @if($paymentReport->status === 'pending')
         <div class="content-card">
             <div class="content-card-header">
@@ -155,30 +176,57 @@
                     <strong style="color:var(--accent);">Pembayaran</strong>.
                 </div>
 
+                {{-- Tombol Verifikasi --}}
                 <form method="POST"
-                      action="{{ route('admin.payment-reports.verify', $paymentReport) }}"
-                      onsubmit="return confirm('Verifikasi laporan ini? Pastikan sudah cek mutasi.')">
+                    action="{{ route('admin.payment-reports.verify', $paymentReport) }}"
+                    onsubmit="return confirm('Verifikasi laporan ini? Pastikan sudah cek mutasi.')"
+                    style="margin-bottom:.75rem;">
                     @csrf
                     <button type="submit"
                             style="width:100%; background:rgba(34,197,94,0.15); color:#4ade80;
-                                   border:1px solid rgba(34,197,94,0.3); border-radius:10px;
-                                   padding:12px; font-weight:600; cursor:pointer; font-size:.9rem;
-                                   display:flex; align-items:center; justify-content:center; gap:8px;"
+                                border:1px solid rgba(34,197,94,0.3); border-radius:10px;
+                                padding:12px; font-weight:600; cursor:pointer; font-size:.9rem;
+                                display:flex; align-items:center; justify-content:center; gap:8px;"
                             onmouseover="this.style.background='rgba(34,197,94,0.25)'"
                             onmouseout="this.style.background='rgba(34,197,94,0.15)'">
                         <i class="bi bi-check-circle-fill"></i> Tandai Sudah Diverifikasi
                     </button>
                 </form>
 
+                {{-- Form Tolak --}}
+                <form method="POST"
+                    action="{{ route('admin.payment-reports.reject', $paymentReport) }}">
+                    @csrf
+                    <label style="color:var(--text-muted); font-size:.78rem; display:block; margin-bottom:6px;">
+                        Atau tolak dengan alasan:
+                    </label>
+                    <textarea name="rejection_reason" rows="2" required
+                            placeholder="cth: Bukti transfer tidak sesuai mutasi rekening..."
+                            style="background:transparent; border:1px solid rgba(255,255,255,0.12);
+                                    border-radius:10px; padding:.6rem 1rem; color:var(--text-white);
+                                    font-size:.85rem; width:100%; resize:vertical; margin-bottom:.75rem;"></textarea>
+                    <button type="submit"
+                            onclick="return confirm('Tolak laporan ini? Penghuni akan melihat alasan ini.')"
+                            style="width:100%; background:rgba(239,68,68,0.12); color:#f87171;
+                                border:1px solid rgba(239,68,68,0.25); border-radius:10px;
+                                padding:12px; font-weight:600; cursor:pointer; font-size:.9rem;
+                                display:flex; align-items:center; justify-content:center; gap:8px;"
+                            onmouseover="this.style.background='rgba(239,68,68,0.22)'"
+                            onmouseout="this.style.background='rgba(239,68,68,0.12)'">
+                        <i class="bi bi-x-circle-fill"></i> Tolak Laporan
+                    </button>
+                </form>
+
                 <a href="{{ route('admin.payments.index') }}"
-                   style="display:block; text-align:center; margin-top:.75rem;
-                          color:var(--text-muted); font-size:.82rem; text-decoration:none;">
+                style="display:block; text-align:center; margin-top:.75rem;
+                        color:var(--text-muted); font-size:.82rem; text-decoration:none;">
                     <i class="bi bi-arrow-right me-1"></i>
                     Pergi ke halaman Pembayaran untuk update tagihan
                 </a>
             </div>
         </div>
-        @else
+
+        @elseif($paymentReport->status === 'verified')
         <div style="background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.15);
                     border-radius:14px; padding:1.25rem; text-align:center;">
             <i class="bi bi-check-circle-fill" style="font-size:2rem; color:#4ade80;"></i>
@@ -187,6 +235,18 @@
             </p>
             <p style="color:var(--text-muted); font-size:.8rem; margin:0;">
                 Diverifikasi pada {{ $paymentReport->updated_at->format('d M Y, H:i') }}
+            </p>
+        </div>
+
+        @elseif($paymentReport->status === 'rejected')
+        <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.15);
+                    border-radius:14px; padding:1.25rem; text-align:center;">
+            <i class="bi bi-x-circle-fill" style="font-size:2rem; color:#f87171;"></i>
+            <p style="color:#f87171; font-weight:600; margin:.5rem 0 4px;">
+                Laporan Ditolak
+            </p>
+            <p style="color:var(--text-muted); font-size:.8rem; margin:0;">
+                Ditolak pada {{ $paymentReport->updated_at->format('d M Y, H:i') }}
             </p>
         </div>
         @endif

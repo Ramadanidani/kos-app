@@ -5,7 +5,7 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <p style="color:var(--text-muted); margin:0; font-size:.88rem;">
         Total {{ $tenants->total() }} penghuni terdaftar.
     </p>
@@ -17,6 +17,26 @@
     </a>
 </div>
 
+@php
+    $expiringSoon = $tenants->filter(function($t) {
+        if (!$t->end_date || $t->status !== 'active') return false;
+        $days = now()->diffInDays($t->end_date, false);
+        return $days <= 7;
+    });
+@endphp
+
+@if($expiringSoon->count() > 0)
+<div style="background:rgba(234,179,8,0.1); border:1px solid rgba(234,179,8,0.2);
+            border-radius:12px; padding:.85rem 1.1rem; margin-bottom:1.25rem;
+            display:flex; align-items:center; gap:12px;">
+    <i class="bi bi-exclamation-triangle-fill" style="color:#fbbf24; font-size:1.1rem; flex-shrink:0;"></i>
+    <div style="font-size:.85rem; color:var(--text-muted);">
+        <strong style="color:#fbbf24;">{{ $expiringSoon->count() }} penghuni</strong>
+        memiliki sewa yang akan/sudah berakhir dalam 7 hari. Segera tindak lanjuti perpanjangan atau pengosongan kamar.
+    </div>
+</div>
+@endif
+
 <div class="content-card">
     <table class="table-mk">
         <thead>
@@ -25,6 +45,7 @@
                 <th>No. HP</th>
                 <th>Kamar</th>
                 <th>Mulai Sewa</th>
+                <th>Akhir Sewa</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
@@ -72,9 +93,46 @@
                     @endif
                 </td>
 
-                {{-- Tanggal --}}
+                {{-- Tanggal Mulai --}}
                 <td style="color:var(--text-muted); font-size:.85rem;">
                     {{ $tenant->start_date?->format('d M Y') ?? '—' }}
+                </td>
+
+                {{-- Akhir Sewa --}}
+                <td style="font-size:.85rem;">
+                    @if($tenant->end_date)
+                        @php
+                            $daysLeft = now()->diffInDays($tenant->end_date, false);
+                        @endphp
+
+                        @if($daysLeft < 0)
+                            {{-- Sudah lewat --}}
+                            <span style="color:#f87171; font-weight:600;">
+                                {{ $tenant->end_date->format('d M Y') }}
+                            </span>
+                            <div style="font-size:.72rem; color:#f87171;">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                Lewat {{ abs($daysLeft) }} hari
+                            </div>
+                        @elseif($daysLeft <= 7)
+                            {{-- Mendekati (≤7 hari) --}}
+                            <span style="color:#fbbf24; font-weight:600;">
+                                {{ $tenant->end_date->format('d M Y') }}
+                            </span>
+                            <div style="font-size:.72rem; color:#fbbf24;">
+                                <i class="bi bi-clock-fill me-1"></i>
+                                {{ $daysLeft }} hari lagi
+                            </div>
+                        @else
+                            {{-- Masih aman --}}
+                            <span style="color:var(--text-muted);">
+                                {{ $tenant->end_date->format('d M Y') }}
+                            </span>
+                        @endif
+                    @else
+                        <span style="color:var(--text-muted);">—</span>
+                        <div style="font-size:.72rem; color:var(--text-muted);">Belum ditentukan</div>
+                    @endif
                 </td>
 
                 {{-- Status --}}

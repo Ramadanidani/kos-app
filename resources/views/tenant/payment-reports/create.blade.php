@@ -199,9 +199,9 @@
             <div style="background:rgba(255,140,50,0.08); border:1px solid rgba(255,140,50,0.15);
                         border-radius:10px; padding:.85rem; font-size:.8rem; color:var(--text-muted);">
                 <i class="bi bi-exclamation-triangle me-1" style="color:var(--accent);"></i>
-                Hanya bisa kirim <strong style="color:var(--accent);">1 laporan per bulan</strong>.
-                Pastikan semua data sudah benar sebelum mengirim.
-            </div>
+                Hanya bisa kirim <strong style="color:var(--accent);">1 laporan aktif per bulan</strong>.
+                Jika laporan sebelumnya ditolak, kamu bisa mengirim laporan baru untuk periode yang sama.
+            </div>            
         </div>
     </div>
 
